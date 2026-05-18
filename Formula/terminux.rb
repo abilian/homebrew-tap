@@ -41,24 +41,14 @@ class Terminux < Formula
   end
 
   on_linux do
-    # pywebview's GTK backend: PyGObject talks to GTK 3 + WebKit2GTK,
-    # which it loads at runtime via GObject-Introspection typelibs.
-    depends_on "pkgconf" => :build
-    depends_on "cairo"
-    depends_on "glib"
-    depends_on "gobject-introspection"
+    # pywebview's GTK backend. The GObject/cairo bindings come from
+    # Homebrew (pygobject3 pulls py3cairo + gobject-introspection); pip-building
+    # them is impractical (meson toolchain under Homebrew's --no-binary). The
+    # --system-site-packages virtualenv imports them; GTK 3 + WebKit2GTK supply
+    # the runtime typelibs.
     depends_on "gtk+3"
+    depends_on "pygobject3"
     depends_on "webkitgtk"
-
-    resource "pycairo" do
-      url "https://files.pythonhosted.org/packages/22/d9/1728840a22a4ef8a8f479b9156aa2943cd98c3907accd3849fb0d5f82bfd/pycairo-1.29.0.tar.gz"
-      sha256 "f3f7fde97325cae80224c09f12564ef58d0d0f655da0e3b040f5807bd5bd3142"
-    end
-
-    resource "pygobject" do
-      url "https://files.pythonhosted.org/packages/2b/58/d34e67a79631177e3c08e7d02b5165147f590171f2cae6769502af5f7f7e/pygobject-3.50.0.tar.gz"
-      sha256 "4500ad3dbf331773d8dedf7212544c999a76fc96b63a91b3dcac1e5925a1d103"
-    end
   end
 
   resource "anyio" do

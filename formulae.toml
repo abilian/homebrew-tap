@@ -28,18 +28,14 @@ desc = "Cross-platform desktop terminal with workspaces and tabs"
 homepage = "https://pypi.org/project/terminux/"
 python = "python@3.13"
 test = 'assert_match "terminux", shell_output("#{bin}/terminux --help")'
-linux_extra = ["pywebview[gtk]"]
-ignore = ["pygobject-stubs"]
-linux_note = """pywebview's GTK backend: PyGObject talks to GTK 3 + WebKit2GTK,
-which it loads at runtime via GObject-Introspection typelibs."""
-resolve_apt = [
-  "build-essential", "pkg-config",
-  "libcairo2-dev", "libgirepository1.0-dev", "libglib2.0-dev",
-]
+linux_note = """pywebview's GTK backend. The GObject/cairo bindings come from
+Homebrew (pygobject3 pulls py3cairo + gobject-introspection); pip-building
+them is impractical (meson toolchain under Homebrew's --no-binary). The
+--system-site-packages virtualenv imports them; GTK 3 + WebKit2GTK supply
+the runtime typelibs."""
 
 [terminux.depends_on.linux]
-build = ["pkgconf"]
-runtime = ["cairo", "glib", "gobject-introspection", "gtk+3", "webkitgtk"]
+runtime = ["gtk+3", "pygobject3", "webkitgtk"]
 
 [prezo]
 pypi = "prezo"
