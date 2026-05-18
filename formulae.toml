@@ -1,0 +1,81 @@
+# Source of truth for `scripts/gen_formula.py`.
+#
+# One [<formula>] table per Formula/<formula>.rb. Re-render after a PyPI
+# bump with:  make update FORMULA=<formula>   (or `update-check` for a dry run)
+#
+# Keys:
+#   pypi              PyPI project name (defaults to the table name)
+#   version           exact version, or "latest"
+#   class_name        Ruby class (defaults to CamelCase of the formula name)
+#   desc / homepage / license   formula metadata ("" => take from PyPI)
+#   python            Homebrew Python formula to build the virtualenv against
+#   test              body of the `test do ... end` block
+#   linux_extra       extra requirements resolved ONLY for Linux
+#                     (e.g. a GUI backend the package doesn't pull itself)
+#   macos_extra       extra requirements resolved ONLY for macOS
+#   ignore            resolved dependency names to drop (PEP 503 normalized)
+#   macos_note / linux_note   comment rendered atop the on_<os> block
+#   resolve_apt       apt packages the Linux resolver container needs to
+#                     generate sdist metadata (build headers, compilers)
+#   [<f>.depends_on.linux] / [<f>.depends_on.macos]
+#                     build   = Homebrew formulae added as `=> :build`
+#                     runtime = Homebrew formulae added as plain depends_on
+
+[terminux]
+pypi = "terminux"
+version = "0.1.0"
+desc = "Cross-platform desktop terminal with workspaces and tabs"
+homepage = "https://pypi.org/project/terminux/"
+python = "python@3.13"
+test = 'assert_match "terminux", shell_output("#{bin}/terminux --help")'
+linux_extra = ["pywebview[gtk]"]
+ignore = ["pygobject-stubs"]
+linux_note = """pywebview's GTK backend: PyGObject talks to GTK 3 + WebKit2GTK,
+which it loads at runtime via GObject-Introspection typelibs."""
+resolve_apt = [
+  "build-essential", "pkg-config",
+  "libcairo2-dev", "libgirepository1.0-dev", "libglib2.0-dev",
+]
+
+[terminux.depends_on.linux]
+build = ["pkgconf"]
+runtime = ["cairo", "glib", "gobject-introspection", "gtk+3", "webkitgtk"]
+
+[prezo]
+pypi = "prezo"
+version = "2026.4.2"
+desc = "TUI-based presentation tool for the terminal (Markdown/MARP/Deckset)"
+homepage = "https://pypi.org/project/prezo/"
+license = "MIT"
+python = "python@3.13"
+test = 'assert_match "prezo", shell_output("#{bin}/prezo --help")'
+
+[prezo.depends_on.macos]
+runtime = [
+  "cairo", "freetype", "jpeg-turbo", "libtiff", "libyaml",
+  "little-cms2", "openjpeg", "webp",
+]
+
+[prezo.depends_on.linux]
+runtime = [
+  "cairo", "freetype", "jpeg-turbo", "libtiff", "libyaml",
+  "little-cms2", "openjpeg", "webp",
+]
+
+[hop3-cli]
+pypi = "hop3-cli"
+version = "0.4.0"
+class_name = "Hop3Cli"
+desc = "Command-line interface for Hop3 servers (Heroku-like deployment via JSON-RPC)"
+homepage = "https://pypi.org/project/hop3-cli/"
+license = "Apache-2.0"
+python = "python@3.13"
+test = 'assert_match version.to_s, shell_output("#{bin}/hop3 --version")'
+
+[hop3-cli.depends_on.macos]
+build = ["pkgconf", "rust"]
+runtime = ["libsodium"]
+
+[hop3-cli.depends_on.linux]
+build = ["pkgconf", "rust"]
+runtime = ["libsodium"]
