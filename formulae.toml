@@ -1,11 +1,16 @@
 # Source of truth for `scripts/gen_formula.py`.
 #
-# One [<formula>] table per Formula/<formula>.rb. Re-render after a PyPI
-# bump with:  make update FORMULA=<formula>   (or `update-check` for a dry run)
+# One [<formula>] table per Formula/<formula>.rb.
+#   make update FORMULA=<f>   bumps `version` below to the newest PyPI
+#                             release and regenerates the .rb (this file is
+#                             the lockfile — the bump is written back here).
+#   make regen  FORMULA=<f>   regenerates the .rb at the CURRENT `version`
+#                             (use after editing deps/metadata).
 #
 # Keys:
 #   pypi              PyPI project name (defaults to the table name)
-#   version           exact version, or "latest"
+#   version           pinned release shipped by the tap; `make update`
+#                     advances it. ("latest" also works but defeats pinning.)
 #   class_name        Ruby class (defaults to CamelCase of the formula name)
 #   desc / homepage / license   formula metadata ("" => take from PyPI)
 #   python            Homebrew Python formula to build the virtualenv against
@@ -23,7 +28,7 @@
 
 [terminux]
 pypi = "terminux"
-version = "0.1.0"
+version = "0.5.0"
 desc = "Cross-platform desktop terminal with workspaces and tabs"
 homepage = "https://pypi.org/project/terminux/"
 python = "python@3.13"

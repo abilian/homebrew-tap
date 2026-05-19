@@ -3,8 +3,8 @@ class Terminux < Formula
 
   desc "Cross-platform desktop terminal with workspaces and tabs"
   homepage "https://pypi.org/project/terminux/"
-  url "https://files.pythonhosted.org/packages/b3/83/6550967757bfba589fb27f6622561436f817a6d1bb82095303235c37d3ec/terminux-0.1.0.tar.gz"
-  sha256 "32aeae8408b53817a92fe0e87080d36b3a23107aae26ad5b9a19b3165cf22ea4"
+  url "https://files.pythonhosted.org/packages/e5/68/0cbb3896cb003ccc3cfa7461cde7a1bb6718a354edca024677dc4ddc1c1f/terminux-0.5.0.tar.gz"
+  sha256 "b36805776db87881ad2210fef074e8115b8fc326c4401d17eaed309aa7856fc5"
 
   depends_on "python@3.13"
 

@@ -228,8 +228,14 @@ def render(p: Plan) -> str:
     ]
     if p.license:
         L.append(f'  license "{p.license}"')
-    L += ["", f'  depends_on "{p.python}"']
-    L += _dep_lines(p.common_dep, "  ")
+    # Homebrew canonical order: :build deps first, then runtime deps —
+    # python@3.13 is just another runtime dep, sorted in place.
+    top_dep = {
+        "build": p.common_dep.get("build", []),
+        "runtime": [*p.common_dep.get("runtime", []), p.python],
+    }
+    L += [""]
+    L += _dep_lines(top_dep, "  ")
 
     def note_lines(text: str) -> list[str]:
         return [f"    # {ln}" for ln in text.splitlines()] if text else []
@@ -271,9 +277,37 @@ def render(p: Plan) -> str:
 # --------------------------------------------------------------------------- #
 # planning
 # --------------------------------------------------------------------------- #
-def build_plan(name: str, cfg: dict) -> Plan:
+def latest_version(pypi: str) -> str:
+    """Newest release PyPI itself considers current (matches `pip install`)."""
+    return http_json(f"https://pypi.org/pypi/{pypi}/json")["info"]["version"]
+
+
+def bump_toml_version(formula: str, new: str) -> str:
+    """Rewrite `version = "..."` under the [formula] table; return the old value."""
+    lines = CONFIG.read_text().splitlines()
+    header = re.compile(r"^\[([^\]]+)\]\s*$")
+    in_table = False
+    old: str | None = None
+    for i, ln in enumerate(lines):
+        m = header.match(ln)
+        if m:
+            in_table = m.group(1) == formula
+            continue
+        if in_table:
+            vm = re.match(r'^(version\s*=\s*)"(.*?)"(.*)$', ln)
+            if vm:
+                old = vm.group(2)
+                lines[i] = f'{vm.group(1)}"{new}"{vm.group(3)}'
+                break
+    if old is None:
+        raise SystemExit(f"no version key under [{formula}] in {CONFIG.name}")
+    CONFIG.write_text("\n".join(lines) + "\n")
+    return old
+
+
+def build_plan(name: str, cfg: dict, version_override: str | None = None) -> Plan:
     pypi = cfg.get("pypi", name)
-    version = cfg.get("version", "latest")
+    version = version_override or cfg.get("version", "latest")
     ignore = {normalize(x) for x in cfg.get("ignore", [])}
     main_norm = normalize(pypi)
     drop = ignore | {main_norm}
@@ -357,6 +391,12 @@ def main() -> int:
         action="store_true",
         help="write the file (default: print a diff and exit)",
     )
+    ap.add_argument(
+        "--update",
+        action="store_true",
+        help="bump the pin to the newest PyPI release before rendering "
+        "(with --write, also rewrites the pin in formulae.toml)",
+    )
     args = ap.parse_args()
 
     config = tomllib.loads(CONFIG.read_text())
@@ -365,14 +405,28 @@ def main() -> int:
             f"'{args.formula}' not in {CONFIG.name}; known: {', '.join(sorted(config))}"
         )
 
+    cfg = config[args.formula]
+    old_pin = cfg.get("version", "latest")
+    override = None
+    if args.update:
+        latest = latest_version(cfg.get("pypi", args.formula))
+        override = latest
+        if latest == old_pin:
+            sys.stderr.write(f"==> {args.formula}: already latest ({latest})\n")
+        else:
+            sys.stderr.write(f"==> {args.formula}: {old_pin} -> {latest}\n")
+
     sys.stderr.write(f"==> resolving {args.formula} (macOS host + Linux docker)\n")
-    plan = build_plan(args.formula, config[args.formula])
+    plan = build_plan(args.formula, cfg, override)
     rendered = render(plan)
 
     target = FORMULA_DIR / f"{args.formula}.rb"
     current = target.read_text() if target.exists() else ""
 
     if args.write:
+        if args.update and override and override != old_pin:
+            bump_toml_version(args.formula, override)
+            print(f"bumped {CONFIG.name}: {args.formula} {old_pin} -> {override}")
         target.write_text(rendered)
         print(f"wrote {target.relative_to(ROOT)}")
         print(

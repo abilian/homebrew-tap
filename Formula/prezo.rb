@@ -88,8 +88,8 @@ class Prezo < Formula
   end
 
   resource "python-frontmatter" do
-    url "https://files.pythonhosted.org/packages/96/de/910fa208120314a12f9a88ea63e03707261692af782c99283f1a2c8a5e6f/python-frontmatter-1.1.0.tar.gz"
-    sha256 "7118d2bd56af9149625745c58c9b51fb67e8d1294a0c76796dafdc72c36e5f6d"
+    url "https://files.pythonhosted.org/packages/e9/21/88aefb4f1de6661b5a003175e21e4a5ad94f5e52b2abf4170a11883c7d81/python_frontmatter-1.2.0.tar.gz"
+    sha256 "5b26ccd3cb85af77feb11d83b922c7bb5aeccb0c9d3fb236b938c600b6322984"
   end
 
   resource "pyyaml" do
@@ -103,8 +103,8 @@ class Prezo < Formula
   end
 
   resource "textual" do
-    url "https://files.pythonhosted.org/packages/1c/b3/b62658f6cf808d28e4d16a07509728a7b17824f55a6d3533f017fd4566b0/textual-8.2.6.tar.gz"
-    sha256 "cef3714498a120a99278b98d4c165c278844e73db50f1db039aaabd89f2d1b63"
+    url "https://files.pythonhosted.org/packages/9b/7a/c519db0aba5024f86e71e9631810bfdd6866ed2c8695bd7fa34b90e7ef59/textual-8.2.7.tar.gz"
+    sha256 "658f568ff81e30ed43890c3e07520390e5cf1b4763822006e060656b0a88f105"
   end
 
   resource "textual-image" do

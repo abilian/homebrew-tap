@@ -41,22 +41,27 @@ the generator resolves the macOS tree on the host **and** the Linux tree in a
 Docker container, then classifies each dependency: shared resources go at the
 top level, platform-specific ones into `on_macos` / `on_linux` blocks.
 
-When a package or one of its dependencies is updated on PyPI:
+`formulae.toml` is the lockfile: each formula's `version` is the exact
+release the tap ships. Two verbs, each with a `-check` dry run and an `-all`
+whole-tap sweep:
 
-1. Bump `version` (or set it to `"latest"`) for that formula in
-   `formulae.toml`. Adjust `linux_extra` / `depends_on` only if the package's
-   own dependencies changed.
-2. Preview the change (resolves macOS + Linux, prints a diff, writes nothing):
+- **`update`** — bump the pin to the newest PyPI release, then regenerate.
+  Rewrites `version` in `formulae.toml` *and* the `.rb`. This is what you
+  want when upstream publishes a new release.
+- **`regen`** — regenerate the `.rb` at the *current* pin, no version
+  change. Use after editing `depends_on` / metadata, or to confirm the
+  generator is idempotent.
 
-   ```sh
-   make update-check FORMULA=prezo
-   ```
+```sh
+make update-check FORMULA=prezo   # show "prezo: 2026.4.2 -> X" + the .rb diff
+make update       FORMULA=prezo   # apply it, then brew style --fix + audit
+make update-all                   # bump every formula to its latest release
+make regen FORMULA=terminux       # rebuild terminux.rb at its pinned version
+```
 
-3. Apply it (writes the `.rb`, then runs `brew style --fix` + strict audit):
-
-   ```sh
-   make update FORMULA=prezo
-   ```
+`*-check` writes nothing and exits non-zero if anything would change;
+`*-all` sweeps every formula in `formulae.toml` (the `-check` variants keep
+going and aggregate, the apply variants stop at the first failure).
 
 4. Verify the build on both platforms:
 
