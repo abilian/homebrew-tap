@@ -7,6 +7,8 @@ class Prezo < Formula
   sha256 "deb9225f8365687c3dc6157467c22fd8bd20bbc9c2eb8782fa1cfc7fdc7c626d"
   license "MIT"
 
+  depends_on "pkgconf" => :build
+  depends_on "rust" => :build
   depends_on "cairo"
   depends_on "freetype"
   depends_on "jpeg-turbo"
@@ -83,13 +85,13 @@ class Prezo < Formula
   end
 
   resource "pypdf" do
-    url "https://files.pythonhosted.org/packages/bf/58/6dd97d78a4b17a7a6b9d1c6ad23895abc41f0fdc49c553cc05bdfdcc36d0/pypdf-6.11.0.tar.gz"
-    sha256 "062b51c81b0910e6d2755e99e1c5547a0a23b7d0a32322af66240d8edcfabe87"
+    url "https://files.pythonhosted.org/packages/a2/ba/f82d1cb35b04041b5f796d4eedbaecafcbf99e83b7a2542b44a936959dd7/pypdf-6.12.0.tar.gz"
+    sha256 "061f135db8934503ed301c2d4cfaccb12f0a2ef1db11c5d0768a72a5ab4097d8"
   end
 
   resource "python-frontmatter" do
-    url "https://files.pythonhosted.org/packages/e9/21/88aefb4f1de6661b5a003175e21e4a5ad94f5e52b2abf4170a11883c7d81/python_frontmatter-1.2.0.tar.gz"
-    sha256 "5b26ccd3cb85af77feb11d83b922c7bb5aeccb0c9d3fb236b938c600b6322984"
+    url "https://files.pythonhosted.org/packages/9d/e8/79cbe69864d44f3b48e70ebee0a872a7d5a4e7150c9f8577ed7a5beefff0/python_frontmatter-1.3.0.tar.gz"
+    sha256 "acc73e477a568dc2a25c9e130c6c68ae8daa8c204c8f7e813db47d6a7280dcf2"
   end
 
   resource "pyyaml" do

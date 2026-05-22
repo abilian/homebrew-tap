@@ -52,12 +52,16 @@ python = "python@3.13"
 test = 'assert_match "prezo", shell_output("#{bin}/prezo --help")'
 
 [prezo.depends_on.macos]
+# prezo's build backend is uv_build, which Homebrew's --no-binary forces
+# pip to source-build; that transitively builds maturin from Rust source.
+build = ["pkgconf", "rust"]
 runtime = [
   "cairo", "freetype", "jpeg-turbo", "libtiff", "libyaml",
   "little-cms2", "openjpeg", "webp",
 ]
 
 [prezo.depends_on.linux]
+build = ["pkgconf", "rust"]
 runtime = [
   "cairo", "freetype", "jpeg-turbo", "libtiff", "libyaml",
   "little-cms2", "openjpeg", "webp",
