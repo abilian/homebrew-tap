@@ -107,6 +107,8 @@ Each formula pins its full transitive dependency tree as `resource` blocks. The 
 
 Unlike `brew update-python-resources` (which only resolves for the host OS), the generator resolves the macOS tree on the host **and** the Linux tree in a Docker container, then classifies each dependency: shared resources go at the top level, platform-specific ones into `on_macos` / `on_linux` blocks.
 
+A resource that needs a source fix gets a `patches/<resource>.diff`, which the generator inlines into that resource in every formula that uses it. Today that is only [`patches/pyobjc-core.diff`](patches/pyobjc-core.diff), which lets `libera` and `terminux` build with the older toolchains of macOS 14.
+
 `formulae.toml` is the lockfile: each formula's `version` is the exact release the tap ships. Two verbs, each with a `-check` dry run and an `-all` whole-tap sweep:
 
 - **`update`** — bump the pin to the newest PyPI release, then regenerate. Rewrites `version` in `formulae.toml` *and* the `.rb`. This is what you want when upstream publishes a new release.

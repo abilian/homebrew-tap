@@ -1,0 +1,11 @@
+pyobjc-core builds one test-only extension (PyObjCTest.block2) with
+-fdisable-block-signature-string, which Apple clang 16 and older reject.
+Every toolchain that runs on macOS 14 (Xcode <= 16.2) is that old, so the
+source build fails there. Nothing outside pyobjc's own test suite loads
+this extension; dropping the flag only changes how it is compiled.
+--- a/Modules/objc/test/block2.m
++++ b/Modules/objc/test/block2.m
+@@ -1,3 +1,2 @@
+ /*
+- * CFLAGS: -fdisable-block-signature-string
+  */

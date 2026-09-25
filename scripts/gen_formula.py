@@ -38,6 +38,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = ROOT / "formulae.toml"
 FORMULA_DIR = ROOT / "Formula"
+# patches/<resource>.diff is inlined into that resource in every formula.
+PATCH_DIR = ROOT / "patches"
 LINUX_IMAGE = "python:3.13-slim"
 
 
@@ -208,9 +210,17 @@ def _res_block(resources: list[Res], indent: str) -> list[str]:
             f'{indent}resource "{r.name}" do',
             f'{indent}  url "{url}"',
             f'{indent}  sha256 "{sha}"',
-            f"{indent}end",
-            "",
         ]
+        patch = PATCH_DIR / f"{r.name}.diff"
+        if patch.exists():
+            body = patch.read_text().splitlines()
+            lines += [
+                "",
+                f"{indent}  patch <<~EOS",
+                *(f"{indent}    {ln}" if ln else "" for ln in body),
+                f"{indent}  EOS",
+            ]
+        lines += [f"{indent}end", ""]
     if lines:
         lines.pop()  # trailing blank
     return lines

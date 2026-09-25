@@ -12,6 +12,20 @@ class Terminux < Formula
     resource "pyobjc-core" do
       url "https://files.pythonhosted.org/packages/a5/78/abc4ce5920305780aeb36b4067a86253378b36e29ba96673a3deb02eb03a/pyobjc_core-12.2.2.tar.gz"
       sha256 "3906452339cd06a3bb07df103c2511d4cb0f7a22d8771c0b802eba15d9a642b6"
+
+      patch <<~EOS
+        pyobjc-core builds one test-only extension (PyObjCTest.block2) with
+        -fdisable-block-signature-string, which Apple clang 16 and older reject.
+        Every toolchain that runs on macOS 14 (Xcode <= 16.2) is that old, so the
+        source build fails there. Nothing outside pyobjc's own test suite loads
+        this extension; dropping the flag only changes how it is compiled.
+        --- a/Modules/objc/test/block2.m
+        +++ b/Modules/objc/test/block2.m
+        @@ -1,3 +1,2 @@
+         /*
+        - * CFLAGS: -fdisable-block-signature-string
+          */
+      EOS
     end
 
     resource "pyobjc-framework-cocoa" do
