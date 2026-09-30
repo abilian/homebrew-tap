@@ -3,8 +3,8 @@ class Libera < Formula
 
   desc "Abilian's desktop office suite"
   homepage "https://docs.liberasuite.eu/"
-  url "https://files.pythonhosted.org/packages/eb/ed/7745abe7a7872e51b3f265efb3a202266edd4fd031d34655970cbde5ad3a/libera-0.3.0.tar.gz"
-  sha256 "47ef8678abf4b8ac57bbca5b7ab057473f62d6f90dfe3d9ab35263193751b890"
+  url "https://files.pythonhosted.org/packages/53/5e/e79762eedd8cab91ee995615fae0656e74196ac7ee7ed857c95958cad758/libera-0.3.1.tar.gz"
+  sha256 "d60dcb450b62556d82f6d0c10c83dce77b9dc0df7756deba13fbb0f9a4be418e"
   license "Apache-2.0"
 
   depends_on "pkgconf" => :build

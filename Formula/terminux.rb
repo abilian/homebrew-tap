@@ -91,8 +91,8 @@ class Terminux < Formula
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/53/0e/7be2983c52622d6c0899300f760e31ba143355cedf1afcb3e65689d5ca85/platformdirs-4.11.13.tar.gz"
-    sha256 "6985eefdc2298693e4ce1fe124645524cb967428eb6384e0ce5b49767e7ea8ba"
+    url "https://files.pythonhosted.org/packages/17/c8/721b3855fe457da514fe249247d404b9b39c5d16532278f70ebaa6acf18b/platformdirs-4.12.2.tar.gz"
+    sha256 "eab5f70271a490ef74618bb314fbb86e3c7e82fa3b9c922c2ea0e0a1a155d329"
   end
 
   resource "proxy-tools" do
