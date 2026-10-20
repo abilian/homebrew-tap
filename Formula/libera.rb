@@ -3,17 +3,15 @@ class Libera < Formula
 
   desc "Abilian's desktop office suite"
   homepage "https://docs.liberasuite.eu/"
-  url "https://files.pythonhosted.org/packages/79/97/0b057a837d42fb4c6dbf974d447d6ef36c12bbac5801e8451ddc8d447ab3/libera-0.4.0.tar.gz"
-  sha256 "52e21e00349cbdcede77a7a5f28c014e6c8f2bcd4f0f32870127822f3224abd7"
+  url "https://files.pythonhosted.org/packages/27/58/00ec61a8ee1c33ae8fb3b1574c040c9405e92c3c3a9105ce86b00b1881d3/libera-0.5.0.tar.gz"
+  sha256 "ad5eafe0c4d0aaa1a3f439fa2cca2b41c2c14fda27a499e537bba9691496f467"
   license "Apache-2.0"
 
-  depends_on "pkgconf" => :build
-  depends_on "rust" => :build
   depends_on "python@3.13"
 
   on_macos do
     # The editors are not in the wheel. `libera --payload-install`
-    # fetches about 170 MB from the payload origin on first use and verifies every
+    # fetches about 100 MB from the payload origin on first use and verifies every
     # artifact against the SHA-256 in the manifest the wheel carries.
 
     resource "pyobjc-core" do

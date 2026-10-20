@@ -87,7 +87,7 @@ runtime = ["libsodium"]
 
 [libera]
 pypi = "libera"
-version = "0.4.0"
+version = "0.5.0"
 desc = "Abilian's desktop office suite"
 homepage = "https://docs.liberasuite.eu/"
 license = "Apache-2.0"
@@ -96,17 +96,11 @@ python = "python@3.13"
 # payload it expects, and the two move independently.
 test = 'assert_match "libera #{version}", shell_output("#{bin}/libera --version")'
 macos_note = """The editors are not in the wheel. `libera --payload-install`
-fetches about 170 MB from the payload origin on first use and verifies every
+fetches about 100 MB from the payload origin on first use and verifies every
 artifact against the SHA-256 in the manifest the wheel carries."""
 linux_note = """pywebview's GTK backend, as for terminux. On Linux the Flatpak
 bundle is the better install -- it brings its own GTK, WebKit and payload --
 and this formula is here for a machine that already lives in Homebrew."""
 
-[libera.depends_on.macos]
-# libera's build backend is uv_build, which Homebrew's --no-binary makes pip
-# build from source, and that pulls maturin's Rust toolchain in with it.
-build = ["pkgconf", "rust"]
-
 [libera.depends_on.linux]
-build = ["pkgconf", "rust"]
 runtime = ["gtk+3", "pygobject3", "webkitgtk"]
