@@ -54,7 +54,7 @@ Upgrade with `brew update && brew upgrade`, remove with `brew uninstall <formula
 
 3. Run the `brew` commands above.
 
-4. For `libera`, fetch the editors once (about 170 MB, each file checked against the SHA-256 in the manifest shipped with the package):
+4. For `libera` 0.6, fetch the editors once (about 170 MB, each file checked against the SHA-256 in the manifest shipped with the package). From 0.7 they come with the formula, and the first line is not needed:
 
    ```sh
    libera --payload-install
@@ -92,10 +92,9 @@ Homebrew runs on Linux too (x86_64 and arm64). It installs under `/home/linuxbre
 
 The GUI apps (`terminux`, `libera`) take GTK 3, WebKitGTK and PyGObject from Homebrew rather than from the system, so their first install downloads and builds a lot more than on macOS.
 
-For `libera`, fetch the editors, then add a launcher entry (icon in the application menu, "Open With" for office files):
+For `libera`, add a launcher entry (icon in the application menu, "Open With" for office files). With 0.6, fetch the editors first with `libera --payload-install`; from 0.7 they come with the formula:
 
 ```sh
-libera --payload-install
 libera --launcher-install
 ```
 

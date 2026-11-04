@@ -55,6 +55,24 @@ def camel(name: str) -> str:
     return "".join(p.capitalize() for p in re.split(r"[-_]+", name))
 
 
+# The platform tag of the binary wheel each OS gets, for `binary_wheels`.
+# Apple Silicon and x86_64 Linux: the wheels the packages publish.
+WHEEL_TAGS = {
+    "macos": r"-macosx_\d+_\d+_arm64\.whl$",
+    "linux": r"-manylinux_\d+_\d+_x86_64\.whl$",
+}
+
+
+def platform_wheel(name: str, version: str, tag: str) -> tuple[str, str]:
+    """(url, sha256) of the binary wheel of `name==version` matching `tag`."""
+    data = http_json(f"https://pypi.org/pypi/{name}/{version}/json")
+    found = [u for u in data["urls"] if re.search(tag, u["filename"])]
+    if len(found) != 1:
+        names = ", ".join(u["filename"] for u in data["urls"])
+        raise SystemExit(f"{name}=={version}: not one wheel matching {tag} in {names}")
+    return found[0]["url"], found[0]["digests"]["sha256"]
+
+
 def http_json(url: str) -> dict:
     with urllib.request.urlopen(url, timeout=30) as r:
         return json.load(r)
@@ -171,6 +189,9 @@ class Res:
     name: str
     version: str
     pypi: str
+    # A pattern for the platform tag of a binary wheel to ship instead of the
+    # sdist (see `binary_wheels`); "" for the usual sdist or pure wheel.
+    wheel: str = ""
 
 
 @dataclass
@@ -191,6 +212,7 @@ class Plan:
     common_res: list[Res] = field(default_factory=list)
     macos_res: list[Res] = field(default_factory=list)
     linux_res: list[Res] = field(default_factory=list)
+    binary_wheels: list[str] = field(default_factory=list)
 
 
 def _dep_lines(dep: dict, indent: str) -> list[str]:
@@ -205,7 +227,10 @@ def _dep_lines(dep: dict, indent: str) -> list[str]:
 def _res_block(resources: list[Res], indent: str) -> list[str]:
     lines = []
     for r in sorted(resources, key=lambda x: x.name.lower()):
-        url, sha, _ = pypi_artifact(r.pypi, r.version)
+        if r.wheel:
+            url, sha = platform_wheel(r.pypi, r.version, r.wheel)
+        else:
+            url, sha, _ = pypi_artifact(r.pypi, r.version)
         lines += [
             f'{indent}resource "{r.name}" do',
             f'{indent}  url "{url}"',
@@ -269,10 +294,23 @@ def render(p: Plan) -> str:
         L.append("")
         L += common
 
+    L += ["", "  def install"]
+    if p.binary_wheels:
+        names = " ".join(p.binary_wheels)
+        L += [
+            f'    venv = virtualenv_install_with_resources(without: %w[{names}])',
+            "    # Binary wheels, installed as the files they are: Homebrew would",
+            "    # unpack them as source trees, and their sdists build from scratch.",
+            f"    %w[{names}].each do |name|",
+            "      r = resource(name)",
+            "      wheel = buildpath/r.downloader.basename",
+            "      cp r.cached_download, wheel",
+            "      venv.pip_install wheel",
+            "    end",
+        ]
+    else:
+        L.append("    virtualenv_install_with_resources")
     L += [
-        "",
-        "  def install",
-        "    virtualenv_install_with_resources",
         "  end",
         "",
         "  test do",
@@ -340,6 +378,13 @@ def build_plan(name: str, cfg: dict, version_override: str | None = None) -> Pla
     Lx = _report_to_map(linux, drop)
 
     common_res, macos_res, linux_res = [], [], []
+    binary = [normalize(x) for x in cfg.get("binary_wheels", [])]
+    for n in binary:
+        if n not in H or n not in Lx:
+            raise SystemExit(f"binary_wheels: {n} is not a dependency on both OSes")
+        macos_res.append(Res(n, H[n][1], H[n][0], WHEEL_TAGS["macos"]))
+        linux_res.append(Res(n, Lx[n][1], Lx[n][0], WHEEL_TAGS["linux"]))
+        del H[n], Lx[n]
     for n in sorted(set(H) | set(Lx)):
         in_h, in_l = n in H, n in Lx
         if in_h and in_l:
@@ -387,6 +432,7 @@ def build_plan(name: str, cfg: dict, version_override: str | None = None) -> Pla
         common_res=common_res,
         macos_res=macos_res,
         linux_res=linux_res,
+        binary_wheels=binary,
     )
 
 

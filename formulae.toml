@@ -20,6 +20,9 @@
 #   macos_extra       extra requirements resolved ONLY for macOS
 #   ignore            resolved dependency names to drop (PEP 503 normalized)
 #   macos_note / linux_note   comment rendered atop the on_<os> block
+#   binary_wheels     dependencies installed from their binary wheel, macOS
+#                     arm64 and Linux x86_64, never their sdist: a prebuilt
+#                     program whose source build is the whole program's
 #   resolve_apt       apt packages the Linux resolver container needs to
 #                     generate sdist metadata (build headers, compilers)
 #   [<f>.depends_on.linux] / [<f>.depends_on.macos]
@@ -95,11 +98,13 @@ python = "python@3.13"
 # Content, not an exit status: --version names the application and the editor
 # payload it expects, and the two move independently.
 test = 'assert_match "libera #{version}", shell_output("#{bin}/libera --version")'
-macos_note = """The editors are not in the wheel. `libera --payload-install`
-fetches about 100 MB from the payload origin on first use and verifies every
-artifact against the SHA-256 in the manifest the wheel carries."""
+# The converter, built per platform. Its sdist builds it from the pinned
+# sources, about 47 minutes and a C++ toolchain, so the formula ships the wheel.
+binary_wheels = ["libera-core"]
+macos_note = """The components come with it, as two packages: libera-core, the
+converter, a binary wheel per platform, and libera-web, the editors and fonts."""
 linux_note = """pywebview's GTK backend, as for terminux. On Linux the Flatpak
-bundle is the better install -- it brings its own GTK, WebKit and payload --
+bundle is the better install -- it brings its own GTK and WebKit --
 and this formula is here for a machine that already lives in Homebrew."""
 
 [libera.depends_on.linux]
