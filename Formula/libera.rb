@@ -3,20 +3,24 @@ class Libera < Formula
 
   desc "Abilian's desktop office suite"
   homepage "https://docs.liberasuite.eu/"
-  url "https://files.pythonhosted.org/packages/56/93/ab38511e1935b271d3c21fd07be6ff7686bbc326f2bb10efe6e8e8e52153/libera-0.6.0.tar.gz"
-  sha256 "479e7c200254f2e349e50493ec8804b7bc01b24664c1b03e661774d3a812789c"
+  url "https://files.pythonhosted.org/packages/a1/bb/be8d119f1a403a57bc4ec8157d571b3901aefae345aa49d279f4ee328925/libera-0.7.0.tar.gz"
+  sha256 "48dc881892d14c0c2ff2ef81f39020c951333ce30321a8e66a9de3011c1d1712"
   license "Apache-2.0"
 
   depends_on "python@3.13"
 
   on_macos do
-    # The editors are not in the wheel. `libera --payload-install`
-    # fetches about 100 MB from the payload origin on first use and verifies every
-    # artifact against the SHA-256 in the manifest the wheel carries.
+    # The components come with it, as two packages: libera-core, the
+    # converter, a binary wheel per platform, and libera-web, the editors and fonts.
+
+    resource "libera-core" do
+      url "https://files.pythonhosted.org/packages/68/4f/e10351c777e4d70be0a826f858130da09bfae42959c16612089d5f977702/libera_core-0.7.1-py3-none-macosx_14_0_arm64.whl"
+      sha256 "3f2b5596bc54c0a9b1a66a7d25fb3ea99ba8f4e8906b140ec4ffb67fd7514632"
+    end
 
     resource "pyobjc-core" do
-      url "https://files.pythonhosted.org/packages/a5/78/abc4ce5920305780aeb36b4067a86253378b36e29ba96673a3deb02eb03a/pyobjc_core-12.2.2.tar.gz"
-      sha256 "3906452339cd06a3bb07df103c2511d4cb0f7a22d8771c0b802eba15d9a642b6"
+      url "https://files.pythonhosted.org/packages/83/58/7bab095330b8893e1ac58f3cf9710462c3242b600f8fa5db0d5dda795775/pyobjc_core-13.0.tar.gz"
+      sha256 "ffe154462d14aa4852f424e9116f17b5f8d44f78fc0f6c4727e721a5fa7177da"
 
       patch <<~EOS
         pyobjc-core builds one test-only extension (PyObjCTest.block2) with
@@ -34,43 +38,53 @@ class Libera < Formula
     end
 
     resource "pyobjc-framework-cocoa" do
-      url "https://files.pythonhosted.org/packages/75/76/49c6da2c6a831020b4854ba20079d5a1030474bffc776b7b73c2eeff8c15/pyobjc_framework_cocoa-12.2.2.tar.gz"
-      sha256 "c96c0ef69a71afbbb0e6a7d594b455c5fe47d62e0db376ee7a2b4b828c16ace9"
+      url "https://files.pythonhosted.org/packages/30/50/55a8779d35f1f86d795264cbd6fe62e35b2cf4fb8343fc888e99268c988a/pyobjc_framework_cocoa-13.0.tar.gz"
+      sha256 "bb7a23941fc8d7866578dbc84e56140efd343a1d28510f530dd1dbf80807daf4"
     end
 
     resource "pyobjc-framework-quartz" do
-      url "https://files.pythonhosted.org/packages/35/b1/426a37c7ae37280b3ffca2571fb48f211946aee2f4ca31a603ed1943c4a7/pyobjc_framework_quartz-12.2.2.tar.gz"
-      sha256 "810f97b210cfd93704d240860286dfd6df09f9f1c52525fc5c2166723aea3f9e"
+      url "https://files.pythonhosted.org/packages/7a/86/ffaa76ca28df5450cce14614c657b910bbd7bb737feaf47f74230c3b78d3/pyobjc_framework_quartz-13.0.tar.gz"
+      sha256 "b9a4942182efbbc7e18e6cb7f5a8faa166dc2fc5e33bece7c7b1355494274add"
     end
 
     resource "pyobjc-framework-security" do
-      url "https://files.pythonhosted.org/packages/c2/92/c304b7fc3a0fe7484a2a3cf25711e70c8fa2b6969d82f4010e35b9af2164/pyobjc_framework_security-12.2.2.tar.gz"
-      sha256 "33efab1ff7d18570148f8f3ddd44eca305f733aee00b9115d5263bef81018f65"
+      url "https://files.pythonhosted.org/packages/63/3a/58e0d6ef73812d279a89858ffd06b64d08eebe30bf84441c4b4df6e9665d/pyobjc_framework_security-13.0.tar.gz"
+      sha256 "e5c3f90773fb53dcd525075011f80a83e6f38cb0ad0bcd13fb8f629bf35d22aa"
     end
 
     resource "pyobjc-framework-uniformtypeidentifiers" do
-      url "https://files.pythonhosted.org/packages/70/c6/31ac40c4d918baa36ca06d196bfec0f47f804a74684988cf424060469d98/pyobjc_framework_uniformtypeidentifiers-12.2.2.tar.gz"
-      sha256 "12f8ba77dcc949ffb9f0f48743cae326aebec8e69cb1ac55a1d1e04dca7bd59a"
+      url "https://files.pythonhosted.org/packages/ba/3d/ab2b17b2d31286c405bc7d818cf85de538bd90144cd3163c693b0de1d623/pyobjc_framework_uniformtypeidentifiers-13.0.tar.gz"
+      sha256 "d70ae3722c91c57de71a77d1004a22a118e38798f66c30552cb93754f7a9cbb5"
     end
 
     resource "pyobjc-framework-webkit" do
-      url "https://files.pythonhosted.org/packages/6f/1f/766e338197f7051c25f23cb0d350caa88234b31c3a759127f2cbb67f3376/pyobjc_framework_webkit-12.2.2.tar.gz"
-      sha256 "e5588df2a73b377b59a994cc2a78b467e4341f4e4d28b52e8671e21a2811d3c1"
+      url "https://files.pythonhosted.org/packages/5c/c3/8cf2bd403676ac956046150c666357f3eaf246e936bfd29069dba59534ce/pyobjc_framework_webkit-13.0.tar.gz"
+      sha256 "80debaa16c416895214c74e483bd13f510fc0965e4def34653e37705a5eef1a6"
     end
   end
 
   on_linux do
     # pywebview's GTK backend, as for terminux. On Linux the Flatpak
-    # bundle is the better install -- it brings its own GTK, WebKit and payload --
+    # bundle is the better install -- it brings its own GTK and WebKit --
     # and this formula is here for a machine that already lives in Homebrew.
     depends_on "gtk+3"
     depends_on "pygobject3"
     depends_on "webkitgtk"
+
+    resource "libera-core" do
+      url "https://files.pythonhosted.org/packages/ec/9a/013c6495a1c9e483147d5d4bc0ec3339d58b621e7baf04a927fdd34850d7/libera_core-0.7.1-py3-none-manylinux_2_34_x86_64.whl"
+      sha256 "1cf9947a938f18c916479d9e24602fe7e9c21bda532abf081608d62acae3e58c"
+    end
   end
 
   resource "bottle" do
     url "https://files.pythonhosted.org/packages/7a/71/cca6167c06d00c81375fd668719df245864076d284f7cb46a694cbeb5454/bottle-0.13.4.tar.gz"
     sha256 "787e78327e12b227938de02248333d788cfe45987edca735f8f88e03472c3f47"
+  end
+
+  resource "libera-web" do
+    url "https://files.pythonhosted.org/packages/0a/0f/37630069e377296090758cab4fb0499bd7c502df0674a04697ee2341f8d7/libera_web-0.7.1-py3-none-any.whl"
+    sha256 "2142a7f449b691f83b9978684426034fa181eb3ae0c8c4fee3bb833573c9e4cf"
   end
 
   resource "proxy-tools" do
@@ -89,7 +103,15 @@ class Libera < Formula
   end
 
   def install
-    virtualenv_install_with_resources
+    venv = virtualenv_install_with_resources(without: %w[libera-core])
+    # Binary wheels, installed as the files they are: Homebrew would
+    # unpack them as source trees, and their sdists build from scratch.
+    %w[libera-core].each do |name|
+      r = resource(name)
+      wheel = buildpath/r.downloader.basename
+      cp r.cached_download, wheel
+      venv.pip_install wheel
+    end
   end
 
   test do

@@ -3,8 +3,8 @@ class Hop3Cli < Formula
 
   desc "Command-line interface for Hop3 servers (Heroku-like deployment via JSON-RPC)"
   homepage "https://pypi.org/project/hop3-cli/"
-  url "https://files.pythonhosted.org/packages/7a/8d/bb0b90fe605b184c83a2f39946c7ae790a9aa7c8b49455c222ab3f9e800c/hop3_cli-0.7.5.tar.gz"
-  sha256 "c48221fb91ad784965e126cbf35c2c2172d7fc7521f7a9ba2c46f7a7f2c47e1d"
+  url "https://files.pythonhosted.org/packages/59/8e/3c599c2ec176b047d0cd6ee770a78092eb8a1956a58f157750aac89a3f8c/hop3_cli-0.8.1.tar.gz"
+  sha256 "e7ba7487ef0ef94710b15fe86dac3d139ec646a3cdbd0b8de889390e4f7246d2"
   license "Apache-2.0"
 
   depends_on "pkgconf" => :build
@@ -13,8 +13,8 @@ class Hop3Cli < Formula
   depends_on "python@3.13"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/a3/c2/24167ea9858356b47a87a50d39908bfdb72ceeefe0041586e704e5376b3a/certifi-2026.7.22.tar.gz"
-    sha256 "741e2c3b351ddf169a738da9f2c048608ff7f2c5cc02f1ebc6b118bb090d5d55"
+    url "https://files.pythonhosted.org/packages/fd/11/b524cbd9bbdaca58608e4cf4053fd463417549e1959fa8d3aa18319f9555/certifi-2026.10.23.tar.gz"
+    sha256 "a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd"
   end
 
   resource "charset-normalizer" do
@@ -28,8 +28,8 @@ class Hop3Cli < Formula
   end
 
   resource "jsonrpcclient" do
-    url "https://files.pythonhosted.org/packages/00/4b/ba54814656b155f14ae73092ae194dd04eaf7e8e9a3da4f2ee7ffc9fe98f/jsonrpcclient-4.0.3-py3-none-any.whl"
-    sha256 "3cbb9e27e1be29821becf135ea183144a836215422727e1ffe5056a49a670f0d"
+    url "https://files.pythonhosted.org/packages/72/19/68e565aee4b9031db88074068ffdb9b4a402815735ac9e4d02201b18d100/jsonrpcclient-4.2.1.tar.gz"
+    sha256 "3a9af03722a86706a7e6f9878b5a1627a18d9b06b5b3d523a921afcde29e0b73"
   end
 
   resource "loguru" do
@@ -53,8 +53,8 @@ class Hop3Cli < Formula
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/17/c8/721b3855fe457da514fe249247d404b9b39c5d16532278f70ebaa6acf18b/platformdirs-4.12.2.tar.gz"
-    sha256 "eab5f70271a490ef74618bb314fbb86e3c7e82fa3b9c922c2ea0e0a1a155d329"
+    url "https://files.pythonhosted.org/packages/d7/9a/8475be631fb33ca1466915e70fd594c42a4e84b512db650eaa14f90fe75d/platformdirs-4.14.5.tar.gz"
+    sha256 "32e9921db7385aa8169bee4fe9501923e5715ba9fb7ea3b9c69b0d8e0639f7a1"
   end
 
   resource "pygments" do
@@ -83,8 +83,8 @@ class Hop3Cli < Formula
   end
 
   resource "tomlkit" do
-    url "https://files.pythonhosted.org/packages/94/96/e07752635b98536177fa1f37671c8f3cdde2e724c6bcf6034b2cfb571565/tomlkit-0.15.1.tar.gz"
-    sha256 "e25bbf38843005246210a12982776f27f99cb9be67160e14434d0c0d21ee1e97"
+    url "https://files.pythonhosted.org/packages/08/72/fc01563df95c189a9f65850096bdc205bc2fe37da6c740cd64afaf18d07e/tomlkit-0.15.2.tar.gz"
+    sha256 "83e32755ba1d20d9340bd069ee97e9f6232ba2346b63ffcba425de01f7e327a6"
   end
 
   resource "urllib3" do
