@@ -3,8 +3,8 @@ class Libera < Formula
 
   desc "Abilian's desktop office suite"
   homepage "https://docs.liberasuite.eu/"
-  url "https://files.pythonhosted.org/packages/a1/bb/be8d119f1a403a57bc4ec8157d571b3901aefae345aa49d279f4ee328925/libera-0.7.0.tar.gz"
-  sha256 "48dc881892d14c0c2ff2ef81f39020c951333ce30321a8e66a9de3011c1d1712"
+  url "https://files.pythonhosted.org/packages/8d/38/8d344581510d2287ced798f11ee278a8846a155b657f7d25f4f536fbe016/libera-0.7.2.tar.gz"
+  sha256 "6b021b9c0f587f262d5b9b3391211e94f893c8a7b7e0154c0dc7b9963e6de46f"
   license "Apache-2.0"
 
   depends_on "python@3.13"
@@ -14,8 +14,8 @@ class Libera < Formula
     # converter, a binary wheel per platform, and libera-web, the editors and fonts.
 
     resource "libera-core" do
-      url "https://files.pythonhosted.org/packages/68/4f/e10351c777e4d70be0a826f858130da09bfae42959c16612089d5f977702/libera_core-0.7.1-py3-none-macosx_14_0_arm64.whl"
-      sha256 "3f2b5596bc54c0a9b1a66a7d25fb3ea99ba8f4e8906b140ec4ffb67fd7514632"
+      url "https://files.pythonhosted.org/packages/5a/2f/00f10887549a9ce907a8784dab17407d67d6094a169679845f14d546f330/libera_core-0.7.2-py3-none-macosx_14_0_arm64.whl"
+      sha256 "309d6dc0a33573e44818f80892edd2fa7d7a864ad1e5f7e611197e70aadece3e"
     end
 
     resource "pyobjc-core" do
@@ -72,8 +72,8 @@ class Libera < Formula
     depends_on "webkitgtk"
 
     resource "libera-core" do
-      url "https://files.pythonhosted.org/packages/ec/9a/013c6495a1c9e483147d5d4bc0ec3339d58b621e7baf04a927fdd34850d7/libera_core-0.7.1-py3-none-manylinux_2_34_x86_64.whl"
-      sha256 "1cf9947a938f18c916479d9e24602fe7e9c21bda532abf081608d62acae3e58c"
+      url "https://files.pythonhosted.org/packages/b9/0a/e48a7e62acae7eb5ffd7869af11bcd1502afbe05d672f2a3c37b24a9e16b/libera_core-0.7.2-py3-none-manylinux_2_34_x86_64.whl"
+      sha256 "994f841bc3ddd86df0150105e98827e3bf48b68fa188f00128b6d7785de50619"
     end
   end
 
@@ -83,8 +83,8 @@ class Libera < Formula
   end
 
   resource "libera-web" do
-    url "https://files.pythonhosted.org/packages/0a/0f/37630069e377296090758cab4fb0499bd7c502df0674a04697ee2341f8d7/libera_web-0.7.1-py3-none-any.whl"
-    sha256 "2142a7f449b691f83b9978684426034fa181eb3ae0c8c4fee3bb833573c9e4cf"
+    url "https://files.pythonhosted.org/packages/10/7a/e28e9ee4c4a8d372fe9e8a2ef395102ca15682b32f67b797fc274c95910a/libera_web-0.7.2-py3-none-any.whl"
+    sha256 "4bfa4847cb44f1a39d0567440b21019d18bf7624da274f3f9dbf1b6dd872fd0a"
   end
 
   resource "proxy-tools" do
